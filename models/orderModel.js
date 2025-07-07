@@ -1,20 +1,25 @@
 import { Schema, model } from "mongoose";
 
-const productSubSchema = new Schema({
-  productId: {
-    type: Schema.Types.ObjectId,
-    required: [true, "Product ID is required!"],
+const productSubSchema = new Schema(
+  {
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: [true, "Product ID is required!"],
+    },
+    quantity: {
+      type: Number,
+      required: [true, "Product quantity is required!"],
+    },
   },
-  quantity: {
-    type: Number,
-    required: [true, "Product quantity is required!"],
-  },
-});
+  { _id: false }
+);
 
 const orderSchema = new Schema(
   {
     userId: {
-      type: Number,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "User ID is required!"],
     },
     products: [productSubSchema],

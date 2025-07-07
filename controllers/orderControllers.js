@@ -15,14 +15,14 @@ export const getAllOrders = async (req, res) => {
 export const createOrder = async (req, res) => {
   const { userId, products } = req.sanitizedBody;
 
-  const productDocs = await Promise.all(
+  const productPrice = await Promise.all(
     products.map((item) => Product.findById(item.productId).select("price"))
   );
 
   let total = 0;
 
   products.forEach((item, i) => {
-    const product = productDocs[i];
+    const product = productPrice[i];
     if (!product) throw new Error(`Product ${item.productId} not found`);
     total += product.price * item.quantity;
   });
@@ -43,7 +43,12 @@ export const getOrderByID = async (req, res) => {
     throw new Error("Invalid order id", { cause: 400 });
   }
 
-  const order = await Order.findById(id);
+  // const order = await Order.findById(id);
+
+  const order = await Order.findById(id).populate(
+    "products.productId",
+    "name price"
+  );
 
   if (!order) {
     throw new Error("Order not found", { cause: 404 });
@@ -65,14 +70,14 @@ export const updateOrder = async (req, res) => {
     throw new Error("Order not found", { cause: 404 });
   }
 
-  const productDocs = await Promise.all(
+  const productPrice = await Promise.all(
     products.map((item) => Product.findById(item.productId).select("price"))
   );
 
   let total = 0;
 
   products.forEach((item, i) => {
-    const product = productDocs[i];
+    const product = productPrice[i];
     if (!product) {
       throw new Error("Product not found", { cause: 404 });
     }

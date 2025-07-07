@@ -1,5 +1,6 @@
 import express from "express";
 import usersRouter from "./routers/userRouter.js";
+import orderRouter from "./routers/orderRouter.js";
 import "./db/index.js";
 import errorHandler from "./middleware/errorHandler.js";
 
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/users", usersRouter);
+app.use("/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome!");

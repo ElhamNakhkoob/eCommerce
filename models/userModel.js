@@ -5,7 +5,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "Name is required!"],
-      mexLength: 30,
+      maxLength: 30,
     },
     email: {
       type: String,
@@ -15,7 +15,8 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required!"],
-      mexlength: 15,
+      maxlength: 15,
+      select:false,
     },
   },
   {timestamps: true}

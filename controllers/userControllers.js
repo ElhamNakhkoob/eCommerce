@@ -23,7 +23,11 @@ export const createUser = async(req, res) => {
   const {sanitizedBody} = req;
 
   const user = await User.create(sanitizedBody);
-  res.status(201).json(user);
+
+  const userObj = user.toObject();
+  delete userObj.password;
+
+  res.status(201).json(userObj);
 };
 
 export const updateUser = async(req, res) => {
